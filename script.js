@@ -4,7 +4,7 @@ var DAYS=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"
 var BLOCKS={A:{d:1,p:3},B:{d:2,p:4},C:{d:3,p:5},D:{d:4,p:6}};
 var CATS=[["T-shirt",1,"1 point"],["Shirt",1,"1 point"],["Trousers",2,"2 points"],["Shorts",1,"1 point"],["Towel",2,"2 points"],["Hoodie or jacket",3,"3 points"],["Bedsheet",3,"3 points"],["Innerwear or socks (pair)",1,"1 point"]];
 var STAFF_PIN="2468";
-var st={limit:20,rate:10,receipts:[],block:"",users:[],session:null};
+var st={limit:10,rate:10,receipts:[],block:"",users:[],session:null};
 var counts=CATS.map(function(){return 0});
 var cur=null;
 
