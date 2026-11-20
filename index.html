@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Hostel laundry made simple: staggered drop-off and pickup days, numbered receipts, quality checks and re-wash requests."><title>Laundry Day Roulette | Hostel laundry service</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+ <div class="bar">
+  <a class="brand" href="#plan"><span class="mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="2.5" width="18" height="19" rx="3"/><circle cx="12" cy="13.5" r="4.5"/><path d="M8 6.5h.01M11 6.5h.01M9.5 13c1 .8 2 .8 3 0"/></svg></span><span class="logo">Laundry Day Roulette</span></a>
+  <form class="search" id="srch" role="search"><input type="text" id="sq" placeholder="Find a receipt, e.g. LDR-0001" aria-label="Find a receipt by number"><button type="submit" aria-label="Search"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#0f1111" stroke-width="2" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5 21 21"/></svg></button></form>
+  <a class="acct" href="#account" id="who"><small>Hello, sign in</small><b>Account</b></a>
+  <a class="acct" href="#history"><small>Your</small><b>History</b></a>
+  <a class="cart" href="#pay" aria-label="Fees to pay"><span class="badge" id="cartN">0</span><b>Pay</b></a>
+ </div>
+ <nav aria-label="Main"><a href="#plan">My days</a><a href="#dropoff">Drop off</a><a href="#collect">Collect</a><a href="#pay">Pay</a><a href="#history">History</a><a href="#account">Account</a><a href="#staff">Staff desk</a></nav>
+</header>
+
+<main class="wrap">
+
+<section class="view" id="v-plan">
+ <div class="banner"><h2>When is my laundry day?</h2><p class="lead">Each block has its own drop-off and pickup day, so nobody loses a whole week by missing one.</p></div>
+ <div class="tiles">
+  <a class="tile" href="#dropoff"><h3>Drop off your clothes</h3><p>Count items, check your limit and get a numbered receipt.</p><span>Start a drop-off</span></a>
+  <a class="tile" href="#collect"><h3>Collect and check</h3><p>Match your receipt, check quality, or request a re-wash within 24 hours.</p><span>Collect clothes</span></a>
+  <a class="tile" href="#pay"><h3>Pay extra-load fees</h3><p>Over your limit? You pay only for the extra points.</p><span>Go to Pay</span></a>
+  <a class="tile" href="#history"><h3>Your laundry history</h3><p>Receipts, re-washes and fees in one place.</p><span>View history</span></a>
+ </div>
+ <div class="card">
+  <h3>Pick your block</h3>
+  <div class="blocks" id="blockBtns" role="group" aria-label="Block"></div>
+  <div id="planOut"></div>
+ </div>
+ <div class="card">
+  <h3>Missed your turn?</h3>
+  <p style="margin:0">Use the backup day (every Sunday, 4–6 PM), or swap days with a student from another block and confirm the swap with your floor coordinator.</p>
+ </div>
+</section>
+
+<section class="view" id="v-dropoff">
+ <h2>Drop off your clothes</h2>
+ <p class="lead">Count with the staff member at the counter. You get a numbered receipt, so there is proof of what you handed in.</p>
+ <div class="grid2">
+  <div>
+   <div class="card">
+    <h3>Count items</h3>
+    <div class="items" id="items"></div>
+   </div>
+  </div>
+  <div>
+   <div class="card">
+    <h3>Your load</h3>
+    <div class="totals"><div><b id="tItems">0</b>items</div><div><b id="tPts">0</b>points</div><div><b id="tLim">0</b>limit</div></div>
+    <div class="meter" id="meter"><div></div></div>
+    <div id="limitMsg" class="note ok">Add items to see how much of your limit is used.</div>
+    <div class="field" style="margin-top:16px"><label for="room">Name or room number</label><input type="text" id="room" autocomplete="off" placeholder="e.g. Room 214"></div>
+    <div class="field"><label for="dBlock">Block</label><select id="dBlock"></select></div>
+    <div class="field"><label for="stain">Stain or special note (optional)</label><input type="text" id="stain" placeholder="e.g. ink on white shirt"></div>
+    <label class="check" id="extraWrap" hidden><input type="checkbox" id="extra"> Staff has agreed to accept the extra load</label>
+    <div class="row"><button class="btn" id="issue">Issue receipt</button><button class="btn alt" id="clear">Clear count</button></div>
+   </div>
+  </div>
+ </div>
+ <div id="slipOut"></div>
+</section>
+
+<section class="view" id="v-collect">
+ <h2>Collect your clothes</h2>
+ <p class="lead">Check every item before you leave. If something is still unclean, request a re-wash on the spot.</p>
+ <div class="card">
+  <div class="field"><label for="rno">Receipt number</label>
+   <div class="row" style="margin-top:0"><input type="text" id="rno" placeholder="e.g. LDR-0001" style="flex:1 1 200px"><button class="btn dark" id="find">Find receipt</button></div></div>
+  <div id="findMsg"></div>
+ </div>
+ <div id="collectBox" hidden>
+  <div class="card">
+   <h3 id="cTitle"></h3>
+   <p id="cSub" style="margin-top:0;color:var(--mute)"></p>
+   <div class="field"><label for="back">Items you got back</label><input type="number" id="back" min="0" inputmode="numeric"></div>
+   <label class="check"><input type="checkbox" class="q"> Clean</label>
+   <label class="check"><input type="checkbox" class="q"> Dry and ready to use</label>
+   <label class="check"><input type="checkbox" class="q"> No visible stain remaining</label>
+   <label class="check"><input type="checkbox" class="q"> Item count matches the receipt</label>
+   <div id="cMsg"></div>
+   <div class="row"><button class="btn" id="accept">Accept clothes</button><button class="btn alt" id="reBtn">Request re-wash</button></div>
+  </div>
+  <div class="card" id="reForm" hidden>
+   <h3>Request a re-wash</h3>
+   <div class="field"><label for="reItems">Which items need re-washing?</label><input type="text" id="reItems" placeholder="e.g. white shirt, 2 towels"></div>
+   <div class="field"><label for="reIssue">What is wrong?</label><input type="text" id="reIssue" placeholder="e.g. stain still visible, smells damp"></div>
+   <div class="row"><button class="btn dark" id="reSend">Send re-wash request</button></div>
+  </div>
+ </div>
+</section>
+
+<section class="view" id="v-account">
+ <h2>Account</h2>
+ <p class="lead">Sign in to link receipts, payments and history to you. Demo accounts live only in this browser and the PIN is not secure, so don’t reuse a real password.</p>
+ <div class="card" id="accOut" hidden></div>
+ <div class="grid2" id="accForms">
+  <div class="card"><h3>Sign in</h3>
+   <div class="field"><label for="liU">Student ID (laundry staff: type staff)</label><input type="text" id="liU" autocomplete="username"></div>
+   <div class="field"><label for="liP">PIN</label><input type="password" id="liP" inputmode="numeric" autocomplete="current-password"></div>
+   <div class="row" style="margin-top:0"><button class="btn dark" id="liGo" type="button">Sign in</button></div><div id="liMsg"></div></div>
+  <div class="card"><h3>Create student account</h3>
+   <div class="field"><label for="crN">Full name</label><input type="text" id="crN" autocomplete="name"></div>
+   <div class="field"><label for="crU">Student ID</label><input type="text" id="crU"></div>
+   <div class="grid2" style="gap:10px"><div class="field"><label for="crR">Room</label><input type="text" id="crR"></div><div class="field"><label for="crB">Block</label><select id="crB"></select></div></div>
+   <div class="field"><label for="crP">PIN (4 to 6 digits)</label><input type="password" id="crP" inputmode="numeric" autocomplete="new-password"></div>
+   <div class="row" style="margin-top:0"><button class="btn" id="crGo" type="button">Create account</button></div><div id="crMsg"></div></div>
+ </div>
+</section>
+
+<section class="view" id="v-pay">
+ <h2>Pay extra-load fees</h2>
+ <p class="lead">Fees apply only to points over your limit (₹10 per point, a sample rate). This is a demo: no real money moves and no card details are collected.</p>
+ <div class="card"><h3>Fees to pay</h3><div id="payMsg"></div><div id="payList"></div></div>
+</section>
+
+<section class="view" id="v-history">
+ <h2>Laundry history</h2>
+ <p class="lead">Every drop-off, collection, re-wash and fee on your account.</p>
+ <div class="stats" id="hStats"></div>
+ <div class="card"><div class="scroll" id="hTable"></div></div>
+</section>
+
+<section class="view" id="v-staff">
+ <h2>Staff desk</h2>
+ <div class="card" id="staffGate" hidden><h3>Staff sign-in needed</h3><p style="margin:0">Sign in as staff on the <a href="#account">Account page</a> to see receipts, fees and re-wash requests.</p></div>
+ <p class="lead">Receipts, re-wash requests and the daily load in one place. This prototype has no login; it is for testing the process.</p>
+ <div class="stats" id="stats"></div>
+ <div class="card"><h3>Re-wash queue</h3><div class="scroll" id="rwTable"></div></div>
+ <div class="card"><h3>Unpaid extra-load fees</h3><div class="scroll" id="feeTable"></div></div>
+ <div class="card"><h3>All receipts</h3><div class="scroll" id="allTable"></div></div>
+ <div class="card">
+  <h3>Settings</h3>
+  <div class="grid2">
+   <div class="field"><label for="limIn">Clothes limit per load (item points)</label><input type="number" id="limIn" min="1" inputmode="numeric"></div>
+   <div class="field"><label>Test data</label><button class="btn alt" id="wipe">Delete all receipts</button></div>
+  </div>
+ </div>
+</section>
+
+<footer>Prototype for INT335 Design Thinking. Sample schedule and limit: replace them with the hostel’s approved values before a live trial. Accounts, receipts and payments are demos saved only in this browser; no real money moves.</footer>
+</main>
+
+<script src="script.js"></script>
+</body>
+</html>
